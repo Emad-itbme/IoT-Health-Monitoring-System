@@ -82,7 +82,7 @@ graph TB
     end
     
     subgraph Network["🌐 Network Layer"]
-        WiFi["WiFi<br/> Network"]
+        WiFi["WiFi<br/>Network"]
         MQTT["Mosquitto MQTT<br/>Broker:1883"]
         
         NodeMCU -->|WiFi| WiFi
@@ -111,12 +111,6 @@ graph TB
         
         InfluxDB -->|Query| Grafana
     end
-    
-    style Hardware fill:#e1f5ff
-    style Network fill:#f3e5f5
-    style Processing fill:#fff3e0
-    style Storage fill:#e8f5e9
-    style Visualization fill:#fce4ec
 ```
 
 ### Data Flow
@@ -397,9 +391,7 @@ flowchart TD
     I --> J{"Valid?"}
     J -->|No| C
     J -->|Yes| F
-    
-    style C fill:#ffcdd2
-    style F fill:#c8e6c9
+
 ```
 
 ---
