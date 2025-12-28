@@ -163,3 +163,6 @@ settings.local.py
 # Backups
 *.backup
 *.bak
+
+
+*.api.txt
