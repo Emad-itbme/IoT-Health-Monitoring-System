@@ -82,7 +82,7 @@ graph TB
     end
     
     subgraph Network["🌐 Network Layer"]
-        WiFi["WiFi<br/>Hamza Network"]
+        WiFi["WiFi<br/> Network"]
         MQTT["Mosquitto MQTT<br/>Broker:1883"]
         
         NodeMCU -->|WiFi| WiFi
