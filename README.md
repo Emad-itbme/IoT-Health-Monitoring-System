@@ -243,7 +243,7 @@ IoT_Server/
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/yourusername/iot-health-monitoring.git
+git clone https://github.com/Emad-itbme/IoT-Health-Monitoring-System.git
 cd iot-health-monitoring
 ```
 
@@ -378,7 +378,7 @@ Rolling Statistics:
 ### Validation Logic
 
 ```mermaid
-flowchart TD
+flowchart LD
     A["Raw Reading"] --> B{"Physiological Range?"}
     B -->|No| C[" INVALID"]
     B -->|Yes| D{"Spike?"}
