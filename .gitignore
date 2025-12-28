@@ -1,0 +1,165 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+.venv
+venv/
+ENV/
+env/
+.env
+.env.local
+.env.*.local
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Arduino IDE
+.ino.cache/
+*.o
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.def
+*.res
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+cmake-build-*/
+.platformio/
+
+# Docker
+docker-compose.override.yml
+.docker
+.dockerignore
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# ML Models (Large Files - Use Git LFS)
+Python_Scripts/models/*.pkl
+!Python_Scripts/models/.gitkeep
+
+# Credentials & Secrets
+.env.production
+secrets.json
+config.local.json
+*.pem
+*.key
+
+# Data Files (Sensitive)
+*.csv
+data/
+*.db
+*.sqlite
+
+# Temporary Files
+*.tmp
+*.temp
+*.bak
+*.orig
+*.swp
+*~
+.~*
+
+# OS
+.DS_Store
+Thumbs.db
+.directory
+
+# Grafana Data
+grafana/data/*
+!grafana/data/.gitkeep
+
+# InfluxDB Data
+influxdb/data/*
+!influxdb/data/.gitkeep
+
+# Mosquitto Data
+mosquitto/data/*
+mosquitto/log/*
+!mosquitto/data/.gitkeep
+!mosquitto/log/.gitkeep
+
+# Test Results
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Misc
+*.zip
+*.tar.gz
+*.rar
+.vagrant
+Vagrantfile
+
+# Hardware
+*.o
+*.elf
+*.bin
+*.hex
+
+# Build Outputs
+build_output/
+*.a
+*.lib
+*.so
+*.dylib
+
+# Configuration Overrides
+config.local.py
+settings.local.py
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# Backups
+*.backup
+*.bak

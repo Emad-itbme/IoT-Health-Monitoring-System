@@ -1,0 +1,8 @@
+docker exec -it influxdb influx delete ^
+  --host http://localhost:8086 ^
+  --token "Dipg3qOkaC8OOR3BSrz8E8A4Q6Vef4Mgcdo7mreqDbVaDSLLtwmQCjgsGjD5Ukr1_B_w1zbepiJMBGz203uFzw==" ^
+  --org "BME" ^
+  --bucket "iot" ^
+  --start 1970-01-01T00:00:00Z ^
+  --stop 2100-01-01T00:00:00Z ^
+  --predicate "_measurement=\"medical_data\" AND topic=\"medical/test/temp\""

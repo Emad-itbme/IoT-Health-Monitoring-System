@@ -1,0 +1,45 @@
+apiVersion: 1
+
+# list of datasources that should be deleted from the database
+deleteDataSourcesFromTags:
+  - grafana_datasource
+
+# List of data sources to insert/update depending
+# what's available in the database
+datasources:
+  # InfluxDB Data Source - For historical/time-series data
+  - name: InfluxDB
+    type: influxdb
+    uid: influxdb-uid
+    access: proxy
+    isDefault: true
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: BME
+      bucket: iot
+      defaultBucket: iot
+      httpMode: GET
+    secureJsonData:
+      token: K_Rg0CMSrOTTlcm1OeHuKjxXseawPNzczs3FSPTzQMhuLpxq9-2ObKPkIPEczY5hDMAT4hYjjGPK5G5Y-ZQOEg==
+    editable: true
+    tags:
+      - grafana_datasource
+
+  # MQTT Data Source - For real-time streaming (WebSocket)
+  # Note: Uses nginx proxy on port 9002 for cross-network access
+  - name: Mosquitto MQTT
+    type: grafana-mqtt-datasource
+    uid: mqtt-uid
+    access: proxy
+    url: ws://192.168.0.2:9002
+    basicAuth: false
+    jsonData:
+      mqttVersion: "4"
+      useTls: false
+      useWebSocket: true
+      clientID: grafana-mqtt-client
+      cleanSession: true
+    editable: true
+    tags:
+      - grafana_datasource

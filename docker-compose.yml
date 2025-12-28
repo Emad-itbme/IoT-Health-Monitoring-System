@@ -1,0 +1,142 @@
+version: "3.8"
+
+services:
+  # -----------------------------
+  # MQTT Broker (Mosquitto)
+  # Real-time streaming for ESP32 and external clients
+  # Exposed on port 1883 (TCP) and 9001 (WebSocket)
+  # Both accessible externally via 195.174.160.31
+  # -----------------------------
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    ports:
+      # MQTT over TCP - accessible externally for ESP32 connections
+      - "1883:1883"
+      # MQTT over WebSocket - for browser real-time streaming in Grafana
+      - "9001:9001"
+    volumes:
+      # Mosquitto configuration
+      - ./mosquitto/config:/mosquitto/config
+      # Persistence data (if enabled in config)
+      - ./mosquitto/data:/mosquitto/data
+      # Logs for debugging
+      - ./mosquitto/log:/mosquitto/log
+    environment:
+      # Bind to all interfaces for external access
+      - MOSQUITTO_BIND=0.0.0.0
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  # -----------------------------
+  # Time-series Database (InfluxDB)
+  # Long-term storage for historical data
+  # Accessible externally for Grafana queries
+  # -----------------------------
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      # InfluxDB HTTP API - accessible externally
+      - "8086:8086"
+    environment:
+      # Bind to all interfaces for external access
+      - INFLUXDB_HTTP_BIND_ADDRESS=:8086
+    volumes:
+      # Persist InfluxDB data on disk
+      - ./influxdb/data:/var/lib/influxdb2
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  # -----------------------------
+  # Dashboard/Visualization (Grafana)
+  # Real-time streaming dashboard
+  # Configured for external network access
+  # Data sources configured to use external IP for browser queries
+  # -----------------------------
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      # Grafana Web UI - exposed on port 3000
+      - "3000:3000"
+    environment:
+      # Force Grafana to bind to all IPv4 interfaces
+      - GF_SERVER_HTTP_ADDR=0.0.0.0
+      # Grafana internal port (default is 3000)
+      - GF_SERVER_HTTP_PORT=3000
+      # External domain for remote access (localhost for now)
+      - GF_SERVER_DOMAIN=localhost
+      # Root URL supports multiple access points
+      - GF_SERVER_ROOT_URL=http://localhost:3000/
+      # Enable real-time messaging and WebSocket support
+      - GF_FEATURE_TOGGLES_ENABLE=autoMigrateGraphPanel,tracing,lokiExplore
+      # Allow MQTT Live for real-time streaming
+      - GF_LIVE_MAX_MESSAGE_SIZE=65536
+      # Disable basic auth requirement for testing (optional)
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      # Allow iframe embedding (if needed)
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      # Set log level for debugging
+      - GF_LOG_LEVEL=info
+      # ✅ Set minimum allowed dashboard refresh interval
+      - GF_DASHBOARDS_MIN_REFRESH_INTERVAL=10ms
+    volumes:
+      # Persist Grafana data (dashboards, users, plugins, etc.)
+      - ./grafana/data:/var/lib/grafana
+      # Auto-provision data sources
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      # Auto-provision dashboards
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+      - mosquitto
+      - influxdb
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  # -----------------------------
+  # Telegraf (MQTT -> InfluxDB bridge)
+  # Real-time data ingestion from MQTT to InfluxDB
+  # Subscribes to MQTT topics and stores metrics for historical analysis
+  # -----------------------------
+  telegraf:
+    image: telegraf:1.30
+    container_name: telegraf
+    depends_on:
+      - mosquitto
+      - influxdb
+    volumes:
+      # Telegraf configuration (read-only)
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+  # -----------------------------
+  # Nginx (MQTT WebSocket Reverse Proxy)
+  # Provides WebSocket proxy to Mosquitto for cross-network access
+  # Accessible on port 9002 from any network interface
+  # Enables MQTT live streaming from both localhost and remote IPs
+  # -----------------------------
+  nginx-mqtt-proxy:
+    image: nginx:latest
+    container_name: nginx-mqtt-proxy
+    ports:
+      # WebSocket proxy for MQTT - accessible externally
+      - "9002:9002"
+    volumes:
+      # Nginx configuration for MQTT WebSocket proxy
+      - ./nginx/mqtt-proxy.conf:/etc/nginx/conf.d/mqtt-proxy.conf:ro
+    depends_on:
+      - mosquitto
+    networks:
+      - iot_network
+    restart: unless-stopped
+
+# Network definition for all services
+networks:
+  iot_network:
+    driver: bridge
