@@ -378,7 +378,7 @@ Rolling Statistics:
 ### Validation Logic
 
 ```mermaid
-flowchart LD
+flowchart LR
     A["Raw Reading"] --> B{"Physiological Range?"}
     B -->|No| C[" INVALID"]
     B -->|Yes| D{"Spike?"}
