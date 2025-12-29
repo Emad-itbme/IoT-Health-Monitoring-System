@@ -248,7 +248,7 @@ Check the [README.md](README.md) **Troubleshooting** section
 1. Search documentation (Ctrl+F)
 2. Check API_REFERENCE.md for details
 3. Open issue on GitHub
-4. Email: your-email@example.com
+
 
 ---
 
