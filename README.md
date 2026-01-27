@@ -8,7 +8,7 @@
 [![Arduino](https://img.shields.io/badge/Arduino-ESP8266-red.svg)](https://arduino.cc/)
 [![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg)](https://www.docker.com/)
 
-**Status:**  Production Ready | **ML Accuracy:** 98.3% | **Latency:** <500ms | **Dashboard:** http://localhost:3000
+**Status:**  Production Ready | **ML Accuracy:** 98.3% | **Latency:** <50ms |
 
 ---
 
